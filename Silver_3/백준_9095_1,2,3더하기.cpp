@@ -1,21 +1,25 @@
 #include <iostream>
+using namespace std;
+;
+
+int arr[12]; // arr[i] 는 i 를 1,2,3의 합으로 나타내기 위한 경우의 수
 
 int main()
 {
-    int T, N;
-
-    std::cin >> T;
-    for (int i = 0; i < T; i++)
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    arr[1] = 1;
+    arr[2] = 2;
+    arr[3] = 4;
+    // 미리 구해두는 것이 효율적
+    for (size_t i = 4; i <= 11; i++)
+        arr[i] = arr[i - 1] + arr[i - 2] + arr[i - 3];
+    int T;
+    cin >> T;
+    while (T--)
     {
-        std::cin >> N;
-        auto *arr = new int[N + 1];
-        arr[0] = 1;
-        arr[1] = 2;
-        arr[2] = 4;
-        for (int i = 3; i < N; i++)
-        {
-            arr[i] = arr[i - 3] + arr[i - 2] + arr[i - 1];
-        }
-        std::cout << arr[N - 1] << "\n";
+        int N;
+        cin >> N;
+        cout << arr[N] << "\n";
     }
 }
