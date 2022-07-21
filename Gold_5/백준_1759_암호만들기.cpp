@@ -6,7 +6,6 @@ int L , C;
 vector<char> alpha;
 vector<char> password;
 char arr[5] = { 'a', 'e', 'i', 'o', 'u' };
-bool visit[16];
 
 void Print()
 {
@@ -38,12 +37,8 @@ void DFS(int level , int cur)
     }
     for (int i = cur + 1;i < C;i++)
     {
-        if (visit[i])
-            continue;
-        visit[i] = true;
         password.push_back(alpha[i]);
         DFS(level + 1 , i);
-        visit[i] = false;
         password.pop_back();
     }
 }
@@ -63,9 +58,7 @@ int main()
     for (int i = 0;i < C - L + 1;i++)
     {
         password.push_back(alpha[i]);
-        visit[i] = true;
         DFS(1 , i);
         password.pop_back();
-        visit[i] = false;
     }
 }
