@@ -1,52 +1,50 @@
 #include<iostream>
+#include<vector>
 #include<queue>
 #include<algorithm>
 using namespace std;
-
-int N, M, V;
-bool board[1002][1002];
-bool visit[1002];
+int N , M , V;
+vector<int> adj[1005];
+bool visit[1005];
 queue<int> Q;
 
-void DFS(int k) // 탐색을 시작할 번호
+void BFS()
 {
-	if (visit[k] == false)
-	{
-		cout << k << " ";
-		visit[k] = true;
-	}
-	for (int i = 1; i <= N; i++)
-	{
-		if ((board[k][i] || board[i][k]) && visit[i] == false)
-		{
-			visit[i] = true;
-			cout << i << " ";
-			DFS(i);
-		}
-	}
-}
-void BFS(int k)
-{
-	Q.push(k);
-	if (visit[k] == false)
-	{
-		cout << k << " ";
-		visit[k] = true;
-	}
+	Q.push(V);
 	while (!Q.empty())
 	{
 		int cur = Q.front();
 		Q.pop();
-		for (int i = 1; i <= N; i++)
+		visit[cur] = true;
+		cout << cur << " ";
+		for (auto nxt : adj[cur])
 		{
-			if ((board[cur][i] || board[i][cur]) && visit[i] == false)
-			{
-				Q.push(i);
-				visit[i] = true;
-				cout << i << " ";
-			}
+			if (visit[nxt])
+				continue;
+			visit[nxt] = true;
+			Q.push(nxt);
 		}
 	}
+}
+
+void DFS(int cur)
+{
+	if (visit[cur])
+		return;
+	visit[cur] = true;
+	cout << cur << " ";
+	for (auto nxt : adj[cur])
+	{
+		if (visit[nxt])
+			continue;
+		DFS(nxt);
+	}
+}
+
+void Clear()
+{
+	for (int i = 0;i < 1005;i++)
+		visit[i] = false;
 }
 
 int main()
@@ -54,18 +52,17 @@ int main()
 	ios::sync_with_stdio(false);
 	cin.tie(nullptr);
 	cin >> N >> M >> V;
-	for (int i = 0; i < M; i++)
+	while (M--)
 	{
-		int a, b;
-		cin >> a >> b;
-		board[a][b] = true;
-		board[b][a] = true;
+		int u , v;
+		cin >> u >> v;
+		adj[u].push_back(v);
+		adj[v].push_back(u);
 	}
+	for (int i = 1;i < 1005;i++)
+		sort(adj[i].begin() , adj[i].end());
 	DFS(V);
 	cout << "\n";
-	for (int i = 1; i <= N; i++)
-		visit[i] = false;
-	BFS(V);
-
-	return 0;
+	Clear();
+	BFS();
 }
